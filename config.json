@@ -1,0 +1,21 @@
+{
+  "version": "0.0-dev",
+  "categories": [
+    "internship_followup",
+    "job_application",
+    "academic_communication",
+    "project_communication",
+    "meeting_request",
+    "leave_request",
+    "professional_followup"
+  ],
+  "tones": ["professional", "formal", "polite"],
+  "vocab_size": 0,
+  "unk_token": "<UNK>",
+  "bos_token": "<s>",
+  "eos_token": "</s>",
+  "lambda": { "unigram": 0.2, "bigram": 0.3, "trigram": 0.5 },
+  "weights": { "lm": 0.50, "context": 0.25, "tone": 0.15, "freq": 0.10 },
+  "max_text_len": 2000,
+  "max_suggestions": 3
+}

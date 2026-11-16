@@ -1,0 +1,38 @@
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/venv/
+**/env/
+**/.ipynb_checkpoints/
+**/*.egg-info/
+
+# Node.js / Next.js
+**/node_modules/
+**/.next/
+**/out/
+**/.turbo/
+
+# Raw corpus — never committed
+MailMate-AI/data/raw/*
+!MailMate-AI/data/raw/.gitkeep
+MailMate-AI/data/processed/*.txt
+MailMate-AI/data/processed/*.jsonl
+
+# Downloads
+**/*.tar.gz
+**/*.zip
+
+# Logs / secrets
+*.log
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# NOTE: models/ is intentionally NOT ignored (~30 MB trained artifacts)
+# NOTE: MailMate-AI/data/processed/labeled_emails.csv is intentionally committed
