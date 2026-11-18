@@ -6,6 +6,7 @@
 **/env/
 **/.ipynb_checkpoints/
 **/*.egg-info/
+**/.pytest_cache/
 
 # Node.js / Next.js
 **/node_modules/
@@ -34,5 +35,5 @@ Thumbs.db
 .vscode/
 .idea/
 
-# NOTE: models/ is intentionally NOT ignored (~30 MB trained artifacts)
+# NOTE: models/ is intentionally NOT ignored (~119 KB trained artifact)
 # NOTE: MailMate-AI/data/processed/labeled_emails.csv is intentionally committed
