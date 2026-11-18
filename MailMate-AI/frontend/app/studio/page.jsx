@@ -6,32 +6,6 @@ import { getCategories, getHealth, predict } from "../../lib/api";
 const MAX_TEXT_LEN = 2000;
 const DEBOUNCE_MS = 60;
 
-const FALLBACK_CATEGORIES = [
-  "academic_communication",
-  "internship_followup",
-  "job_application",
-  "leave_request",
-  "meeting_request",
-  "professional_followup",
-  "project_communication",
-];
-
-const CATEGORY_LABELS = {
-  internship_followup: "Internship Follow-up",
-  job_application: "Job Application",
-  academic_communication: "Academic Communication",
-  project_communication: "Project Communication",
-  meeting_request: "Meeting Request",
-  leave_request: "Leave Request",
-  professional_followup: "Professional Follow-up",
-};
-
-const TONES = [
-  { value: "professional", label: "Professional" },
-  { value: "formal", label: "Formal" },
-  { value: "polite", label: "Polite" },
-];
-
 const TEMPLATES = [
   {
     label: "Internship Follow-up",
@@ -49,13 +23,10 @@ const TEMPLATES = [
 
 function formatCategory(value) {
   if (!value) return "Pending";
-  return (
-    CATEGORY_LABELS[value] ||
-    value
-      .split("_")
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join(" ")
-  );
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 function trailingPrefix(value) {
@@ -72,10 +43,12 @@ function isNextWordMode(value) {
 export default function StudioPage() {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("auto");
-  const [tone, setTone] = useState("professional");
-  const [categoryOptions, setCategoryOptions] = useState(FALLBACK_CATEGORIES);
+  const [tone, setTone] = useState("");
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [toneOptions, setToneOptions] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [detectedCategory, setDetectedCategory] = useState("");
+  const [detectedTone, setDetectedTone] = useState(null);
   const [latency, setLatency] = useState(null);
   const [connected, setConnected] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -95,8 +68,13 @@ export default function StudioPage() {
       .catch(() => alive && setConnected(false));
     getCategories()
       .then((data) => {
-        if (alive && data && Array.isArray(data.categories) && data.categories.length) {
+        if (!alive || !data) return;
+        if (Array.isArray(data.categories)) {
           setCategoryOptions(data.categories);
+        }
+        if (Array.isArray(data.tones)) {
+          setToneOptions(data.tones);
+          setTone((current) => current || data.tones[0] || "");
         }
       })
       .catch(() => {});
@@ -123,7 +101,7 @@ export default function StudioPage() {
           value,
           value.length,
           category === "auto" ? null : category,
-          tone,
+          tone || null,
           controller.signal
         );
         if (controller.signal.aborted) return;
@@ -133,6 +111,15 @@ export default function StudioPage() {
           : [];
         setSuggestions(nextSuggestions);
         setDetectedCategory(data.category || "");
+        setDetectedTone(
+          data.tone && typeof data.tone === "object"
+            ? {
+                label: data.tone.label || "",
+                score:
+                  typeof data.tone.score === "number" ? data.tone.score : null,
+              }
+            : null
+        );
         setLatency(
           typeof data.latency_ms === "number" ? data.latency_ms : null
         );
@@ -143,6 +130,7 @@ export default function StudioPage() {
         setConnected(false);
         setSuggestions([]);
         setDetectedCategory("");
+        setDetectedTone(null);
         setLatency(null);
       }
     },
@@ -153,6 +141,7 @@ export default function StudioPage() {
     if (!text.trim()) {
       setSuggestions([]);
       setDetectedCategory("");
+      setDetectedTone(null);
       setLatency(null);
       lastPredictionRef.current = null;
       return undefined;
@@ -267,6 +256,7 @@ export default function StudioPage() {
     setText("");
     setSuggestions([]);
     setDetectedCategory("");
+    setDetectedTone(null);
     setLatency(null);
     textareaRef.current?.focus();
   };
@@ -321,17 +311,21 @@ export default function StudioPage() {
         <div className="control-group">
           <span className="control-label">Communication tone</span>
           <div className="segmented" role="group" aria-label="Communication tone">
-            {TONES.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={`seg${tone === option.value ? " is-active" : ""}`}
-                aria-pressed={tone === option.value}
-                onClick={() => setTone(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
+            {toneOptions.length ? (
+              toneOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`seg${tone === option ? " is-active" : ""}`}
+                  aria-pressed={tone === option}
+                  onClick={() => setTone(option)}
+                >
+                  {formatCategory(option)}
+                </button>
+              ))
+            ) : (
+              <span className="suggest-empty">Loading tones…</span>
+            )}
           </div>
         </div>
 
@@ -347,6 +341,18 @@ export default function StudioPage() {
           </span>
           <span className="tele-pill">
             Detected: <strong>{formatCategory(detectedCategory)}</strong>
+          </span>
+          <span className="tele-pill">
+            Tone:{" "}
+            <strong>
+              {detectedTone
+                ? `${formatCategory(detectedTone.label)}${
+                    detectedTone.score != null
+                      ? ` (${detectedTone.score.toFixed(2)})`
+                      : ""
+                  }`
+                : "—"}
+            </strong>
           </span>
           <span className="tele-pill">
             <strong>{latency != null ? `${latency.toFixed(1)} ms` : "—"}</strong>
