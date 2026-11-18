@@ -1,12 +1,13 @@
-# Backend dependencies (Python 3.14 compatible minimums)
-# Phase 2 will pin exact versions to match Google Colab training environment
+# Backend dependencies
+# Core ML stack pinned to match the local CPU environment (and the Colab
+# training environment in Phase 2) so pickled/joblib artifacts load reliably.
+scikit-learn==1.8.0
+numpy==2.4.4
+pandas==3.0.2
+joblib==1.5.3
+scipy==1.17.1
 flask>=3.1.0
 nltk>=3.9.1
-scikit-learn>=1.8.0
-numpy>=2.1.0
-scipy>=1.16.1
-pandas>=2.3.3
-joblib>=1.4.2
 
 # Dev / testing
 pytest>=8.3.3

@@ -49,18 +49,19 @@ Open http://localhost:3000
 ## 4. Phase Status
 
 ### Phase 1 — Project setup
-- [ ] Folder structure
-- [ ] .gitignore, requirements.txt, config.json
-- [ ] README.md and INSTRUCTIONS.md
-- [ ] src/ stubs
-- [ ] Next.js scaffold
-- [ ] Git repo pushed
+- [x] Folder structure
+- [x] .gitignore, requirements.txt, config.json
+- [x] README.md and INSTRUCTIONS.md
+- [x] src/ stubs
+- [x] Next.js scaffold
+- [x] Git repo pushed
 
 ### Phase 2 — Core NLP (Colab)
-- [ ] Notebook 01 — corpus + preprocessing
-- [ ] Notebook 02 — n-gram counts
-- [ ] Notebook 03 — classifier + evaluation
-- [ ] models/ verified
+- [x] Notebook 01 — preprocessing, n-gram counts, classifier + evaluation
+- [x] models/mailmate_model.joblib produced (v1.0.0, vocab 261)
+- [x] data/processed/labeled_emails.csv produced (210 rows, 7 categories)
+- [x] config.json updated to v1.0.0
+- [x] models/ verified
 
 ### Phase 3 — Backend + Frontend
 - [ ] backend/loader.py, backend/app.py
@@ -80,7 +81,7 @@ Open http://localhost:3000
 
 Location: MailMate-AI/models/
 Produced by: MailMate-AI/notebooks/01-03 (Colab)
-Shipped with project: yes (~30 MB)
+Shipped with project: yes (~120 KB)
 Corpus shipped: no
 
 ---
@@ -89,6 +90,13 @@ Corpus shipped: no
 
 ### Completed
 <!-- Agent appends here at end of each phase -->
+- Phase 1 — folder structure, config, docs, src/ stubs, Next.js scaffold committed.
+  Removed duplicate `next.config.mjs` and `app/page.js`; pinned ML dependencies;
+  verified flask/nltk/pytest install and NLTK `punkt_tab` resource.
+- Phase 2 — Colab notebook `01_mailmate_nlp_training.ipynb` trained the n-gram LMs
+  and TF-IDF classifier; artifacts (`models/mailmate_model.joblib`, `data/processed/
+  labeled_emails.csv`, `config.json`) moved into the repo and verified: artifact
+  loads, version 1.0.0, vocab 261, `classifier.classes_` === `config.categories`.
 
 ### In Progress
 <!-- Agent updates this -->

@@ -17,7 +17,7 @@ Context-aware predictive text generation for professional email composition.
 ---
 
 ## Project phases
-- [ ] Phase 1 — Project setup
-- [ ] Phase 2 — Core NLP (Colab)
+- [x] Phase 1 — Project setup
+- [x] Phase 2 — Core NLP (Colab)
 - [ ] Phase 3 — Backend + Frontend
 - [ ] Phase 4 — Documentation

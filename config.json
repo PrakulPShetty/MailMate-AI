@@ -1,21 +1,31 @@
 {
-  "version": "0.0-dev",
+  "version": "1.0.0",
+  "vocab_size": 261,
+  "max_suggestions": 3,
+  "max_text_len": 2000,
   "categories": [
+    "academic_communication",
     "internship_followup",
     "job_application",
-    "academic_communication",
-    "project_communication",
-    "meeting_request",
     "leave_request",
-    "professional_followup"
+    "meeting_request",
+    "professional_followup",
+    "project_communication"
   ],
-  "tones": ["professional", "formal", "polite"],
-  "vocab_size": 0,
-  "unk_token": "<UNK>",
-  "bos_token": "<s>",
-  "eos_token": "</s>",
-  "lambda": { "unigram": 0.2, "bigram": 0.3, "trigram": 0.5 },
-  "weights": { "lm": 0.50, "context": 0.25, "tone": 0.15, "freq": 0.10 },
-  "max_text_len": 2000,
-  "max_suggestions": 3
+  "tones": [
+    "professional",
+    "formal",
+    "polite"
+  ],
+  "lambda": {
+    "unigram": 0.2,
+    "bigram": 0.3,
+    "trigram": 0.5
+  },
+  "scoring_weights": {
+    "lm": 0.5,
+    "context": 0.25,
+    "tone": 0.15,
+    "freq": 0.1
+  }
 }
